@@ -53,6 +53,12 @@ public class Event extends TypedData {
         return Job.listJobErrorFeed(jobID, Event.class);
     }
 
+    public static EventCollection list(Map<String, String> params) throws InvalidException, AuthorizationException {
+        if ((!params.containsKey("email")) && (!params.containsKey("id")) && (!params.containsKey("user_id")) && (!params.containsKey("intercom_user_id"))) {
+            throw new InvalidException("an event query must include an email, user_id or intercom_user_id parameter");
+        }
+        return DataResource.list(params, "events", EventCollection.class);
+    }
     public static EventCollection listBy(String type, String parameterName, String parameterValue) {
         if (type.isEmpty() || parameterName.isEmpty() || parameterValue.isEmpty()) {
             throw new IllegalArgumentException("The parameters are required.");
